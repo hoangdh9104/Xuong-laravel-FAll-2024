@@ -18,6 +18,10 @@
             <a class="nav-link active" href="/" aria-current="page">Welcome</a>
             <a class="nav-link" href="{{route('customers.index')}}">Quan ly khach hang</a>
             <a class="nav-link" href="{{route('employees.index')}}">Quan ly nhan vien</a>
+            <a class="nav-link" href="{{route('admin.dashboard')}}">Admin</a>
+            <a class="nav-link" href="{{route('admin.orders.index')}}">Nhan vien</a>
+            <a class="nav-link" href="{{route('client.orders.profile')}}">Nhan vien</a>
+
         </nav>
 
     </header>

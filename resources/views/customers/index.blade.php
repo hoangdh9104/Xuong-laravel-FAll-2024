@@ -75,7 +75,7 @@
                                 </button>
                             </form>
 
-                            <form action="{{ route('customers/forceDestroy', $customer) }}" method="post">
+                            <form action="{{ route('customers.forceDestroy', $customer) }}" method="post">
                                 @csrf
                                 @method('DELETE')
 

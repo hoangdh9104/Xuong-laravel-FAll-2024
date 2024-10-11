@@ -27,4 +27,16 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function shouldReturnJson($request, Throwable $e)
+    {
+
+        // Kiểm tra nếu yêu cầu là từ API (thường được định nghĩa bằng prefix 'api')
+        if ($request->is('api/*') || $request->wantsJson() || $request->ajax()) {
+            return true; // Trả về JSON cho yêu cầu API hoặc AJAX
+        }
+
+        // Nếu không phải API hoặc AJAX, trả về HTML (web)
+        return false;
+    }
 }

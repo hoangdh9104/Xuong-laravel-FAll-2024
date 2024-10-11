@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\TransactionController;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\FinanceReport;
 use App\Models\Sale;
 use App\Models\Tax;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
@@ -254,8 +256,75 @@ Route::get('/', function () {
 //     ]);
 // });
 
-Route::resource('customers', CustomerController::class);
+
+// Middleware khi dang nhap moi duoc vao controller
+// Route::middleware(['auth'])->group(function() {
+//     Route::resource('customers', CustomerController::class);
+//     Route::delete('customers/{customer}/forceDestroy', [CustomerController::class, 'forceDestroy'])->name('customers.forceDestroy');
+
+//     Route::resource('employees',EmployeeController::class);
+//     Route::delete('employees/{employee}/forceDestroy',[EmployeeController::class, 'forceDestroy'])->name('employees.forceDestroy'); 
+// });
+
+
+Route::resource('customers', CustomerController::class)->middleware('auth');
 Route::delete('customers/{customer}/forceDestroy', [CustomerController::class, 'forceDestroy'])->name('customers.forceDestroy');
 
-Route::resource('employees',EmployeeController::class);
-Route::delete('employees/{employee}/forceDestroy',[EmployeeController::class, 'forceDestroy'])->name('employees.forceDestroy');
+Route::resource('employees', EmployeeController::class);
+Route::delete('employees/{employee}/forceDestroy', [EmployeeController::class, 'forceDestroy'])->name('employees.forceDestroy');
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/movies', function () {
+    return view('movies.index');
+})->middleware('checkAge');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->middleware('role:admin')->name('admin.dashboard');
+
+    Route::get('/order', function () {
+        return view('admin.orders.index');
+    })->middleware('role:employee,admin')->name('admin.orders.index');
+
+    // Route cho khách hàng và admin (admin cũng có thể truy cập các route của khách hàng)
+    Route::get('/profile', function () {
+        return view('client.orders.profile');
+    })->middleware('role:customer,admin')->name('client.orders.profile');
+});
+
+Route::get('session', function () {
+
+    // Neu tao moi value cho key thi value se bi ghi de
+    session()->put('ahihi', '123');
+
+    // Add san pham co key la 101
+    session()->put('orders.101', [
+        'name' => 'San pham 1',
+        'price' => 3000,
+    ]);
+
+    session(['orders.102' => ['name' => 'San pham 2', 'price' => 4000]]);
+
+    // Xoa session
+    // session()->forget('ahihi');
+
+    // session()->invalidate();
+
+
+    // Loading trang se tu dong xoa
+    // session()->flash('keke', 'Ok luon');
+    // echo session('keke');
+
+    return session()->get('orders');
+});
+
+Route::get('/transaction/start', [TransactionController::class, 'start'])->name('transaction.start');
+Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaction.store');
+Route::get('/transaction/continue', [TransactionController::class, 'continue'])->name('transaction.continue');
+Route::post('/transaction/complete', [TransactionController::class, 'complete'])->name('transaction.complete');
+Route::post('/transaction/cancel', [TransactionController::class, 'cancel'])->name('transaction.cancel');
