@@ -21,6 +21,8 @@
             <a class="nav-link" href="{{route('admin.dashboard')}}">Admin</a>
             <a class="nav-link" href="{{route('admin.orders.index')}}">Nhan vien</a>
             <a class="nav-link" href="{{route('client.orders.profile')}}">Nhan vien</a>
+            <a class="nav-link" href="{{ route('students.index') }}">Quan ly sinh vien</a>
+
 
         </nav>
 

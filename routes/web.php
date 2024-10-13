@@ -1,13 +1,22 @@
 <?php
 
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TransactionController;
+use App\Models\Classroom;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\FinanceReport;
+use App\Models\Phone;
+use App\Models\Post;
 use App\Models\Sale;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Tax;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -328,3 +337,65 @@ Route::post('/transaction/store', [TransactionController::class, 'store'])->name
 Route::get('/transaction/continue', [TransactionController::class, 'continue'])->name('transaction.continue');
 Route::post('/transaction/complete', [TransactionController::class, 'complete'])->name('transaction.complete');
 Route::post('/transaction/cancel', [TransactionController::class, 'cancel'])->name('transaction.cancel');
+
+
+Route::get('/users', function () {
+
+    $data = User::with('phone')->paginate();
+
+    return view('user-list', compact('data'));
+});
+
+Route::get('/phones/{id}', function ($id) {
+
+    $phone = Phone::find($id);
+
+    dd($phone->user);
+});
+
+
+Route::get('/posts/{id}', function ($id) {
+
+    $post = Post::with('comments')->find($id);
+
+    dd($post->toArray());
+});
+
+// Tạo mới
+Route::get('/users/{id}/add-role', function ($id) {
+
+    $roles = [1,2,6,8];
+    $user = User::find($id);
+
+    $user->roles()->attach($roles);
+
+    dd($user->load('roles')->toArray());
+});
+
+// Xóa
+Route::get('/users/{id}/remove-role', function ($id) {
+
+    $rolesRemove = [1,2];
+    $user = User::find($id);
+
+    $user->roles()->detach($rolesRemove);
+
+    dd($user->load('roles')->toArray());
+});
+
+
+// Update. Xóa những role không tồn tại trong mảng và bổ sung thêm role có trong mảng
+Route::get('/users/{id}/sync-role', function ($id) {
+
+    $rolesRemove = [1,2,4,8];
+    $user = User::find($id);
+
+    $user->roles()->sync($rolesRemove);
+
+    dd($user->load('roles')->toArray());
+});
+
+Route::resource('students', StudentController::class);
+
+Route::resource('classrooms', ClassroomController::class);
+Route::resource('subjects', SubjectController::class);
