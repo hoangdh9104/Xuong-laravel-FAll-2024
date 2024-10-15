@@ -14,18 +14,17 @@
 
 <body>
     <header>
-        <nav class="nav justify-content-center  ">
+        <nav class="navbar d-flex justify-content-evenly" style="background-color: #e3f2fd;">
             <a class="nav-link active" href="/" aria-current="page">Welcome</a>
-            <a class="nav-link" href="{{route('customers.index')}}">Quan ly khach hang</a>
-            <a class="nav-link" href="{{route('employees.index')}}">Quan ly nhan vien</a>
-            <a class="nav-link" href="{{route('admin.dashboard')}}">Admin</a>
-            <a class="nav-link" href="{{route('admin.orders.index')}}">Nhan vien</a>
-            <a class="nav-link" href="{{route('client.orders.profile')}}">Nhan vien</a>
+            <a class="nav-link" href="{{ route('customers.index') }}">Quan ly khach hang</a>
+            <a class="nav-link" href="{{ route('employees.index') }}">Quan ly nhan vien</a>
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin</a>
+            <a class="nav-link" href="{{ route('admin.orders.index') }}">Nhan vien</a>
+            <a class="nav-link" href="{{ route('client.orders.profile') }}">Khach hang</a>
             <a class="nav-link" href="{{ route('students.index') }}">Quan ly sinh vien</a>
-
-
+            <a class="nav-link" href="{{ route('subjects.index') }}">Quan ly mon hoc</a>
+            <a class="nav-link" href="{{ route('classrooms.index') }}">Quan ly lop hoc</a>
         </nav>
-
     </header>
 
     <main class="container">

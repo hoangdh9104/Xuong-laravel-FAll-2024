@@ -56,7 +56,7 @@ class StudentController extends Controller
                 'expiry_date' => $request->expiry_date, 
             ]);
 
-            // Thêm các môn học vào sinh viên
+           
             $student->subjects()->attach($request->subjects);
 
             return redirect()->route('students.index')->with('success', true);
@@ -77,7 +77,7 @@ class StudentController extends Controller
         $student = Student::with('passport', 'subjects')->findOrFail($student->id);
         $passportNumber = $student->passport ? $student->passport->passport_number : 'No Passport';
         $subjects = $student->subject ? $student->subject->name : 'No Subject';
-        // Trả về view với dữ liệu sinh viên
+        
         return view('students.show', compact('student', 'passportNumber', 'subjects'));
     }
 
@@ -91,7 +91,7 @@ class StudentController extends Controller
         $subjects = Subject::all();
 
         // dd($passport->toArray());
-        // Truyền dữ liệu student và danh sách classroom vào view
+       
         return view(self::PATH_VIEW . __FUNCTION__, compact('student', 'classrooms', 'subjects', 'passport'));
     }
 
@@ -103,10 +103,10 @@ class StudentController extends Controller
         $data = $request->validated();
 
         try {
-            // Cập nhật thông tin sinh viên
+            
             $student->update($data);
 
-            // Kiểm tra nếu sinh viên đã có hộ chiếu, thì cập nhật, nếu không, tạo mới
+            
             $passportData = [
                 'student_id' => $student->id,
                 'passport_number' => $request->passport_number,
@@ -115,10 +115,10 @@ class StudentController extends Controller
             ];
 
             if ($student->passport) {
-                // Cập nhật nếu hộ chiếu đã tồn tại
+               
                 $student->passport->update($passportData);
             } else {
-                // Tạo mới hộ chiếu nếu chưa có
+                
                 Passport::create($passportData);
             }
 
@@ -142,7 +142,7 @@ class StudentController extends Controller
             if ($student->passport) {
                 $student->passport->delete();
             }
-            // Xóa sinh viên
+            
             $student->delete();
 
             return back()->with('success', true);

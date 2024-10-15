@@ -364,7 +364,7 @@ Route::get('/posts/{id}', function ($id) {
 // Tạo mới
 Route::get('/users/{id}/add-role', function ($id) {
 
-    $roles = [1,2,6,8];
+    $roles = [1, 2, 6, 8];
     $user = User::find($id);
 
     $user->roles()->attach($roles);
@@ -375,7 +375,7 @@ Route::get('/users/{id}/add-role', function ($id) {
 // Xóa
 Route::get('/users/{id}/remove-role', function ($id) {
 
-    $rolesRemove = [1,2];
+    $rolesRemove = [1, 2];
     $user = User::find($id);
 
     $user->roles()->detach($rolesRemove);
@@ -387,7 +387,7 @@ Route::get('/users/{id}/remove-role', function ($id) {
 // Update. Xóa những role không tồn tại trong mảng và bổ sung thêm role có trong mảng
 Route::get('/users/{id}/sync-role', function ($id) {
 
-    $rolesRemove = [1,2,4,8];
+    $rolesRemove = [1, 2, 4, 8];
     $user = User::find($id);
 
     $user->roles()->sync($rolesRemove);
@@ -395,7 +395,10 @@ Route::get('/users/{id}/sync-role', function ($id) {
     dd($user->load('roles')->toArray());
 });
 
-Route::resource('students', StudentController::class);
 
-Route::resource('classrooms', ClassroomController::class);
-Route::resource('subjects', SubjectController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('students', StudentController::class);
+
+    Route::resource('classrooms', ClassroomController::class);
+    Route::resource('subjects', SubjectController::class);
+});

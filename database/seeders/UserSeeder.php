@@ -14,24 +14,24 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
+            'name' => 'Admin User 1',
+            'email' => 'admin1@gmail.com',
+            'password' => bcrypt('admin1'),
             'role' => 'admin',  // Đặt vai trò là admin
         ]);
         
-        User::create([
-            'name' => 'Employee User',
-            'email' => 'employee@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'employee',  // Đặt vai trò là employee
-        ]);
+        // User::create([
+        //     'name' => 'Employee User',
+        //     'email' => 'employee@example.com',
+        //     'password' => bcrypt('password'),
+        //     'role' => 'employee',  // Đặt vai trò là employee
+        // ]);
         
-        User::create([
-            'name' => 'Customer User',
-            'email' => 'customer@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'customer',  // Đặt vai trò là customer
-        ]);
+        // User::create([
+        //     'name' => 'Customer User',
+        //     'email' => 'customer@example.com',
+        //     'password' => bcrypt('password'),
+        //     'role' => 'customer',  // Đặt vai trò là customer
+        // ]);
     }
 }
